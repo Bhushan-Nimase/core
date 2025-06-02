@@ -1,6 +1,4 @@
-Here's a `README.md` file you can use for your **Food Court Management System** project on GitHub:
 
----
 
 # 🥘 Food Court Management System (Python + MySQL)
 
