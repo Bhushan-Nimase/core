@@ -1,127 +1,118 @@
+# 🍔 Food Court Management System
 
-
-# 🥘 Food Court Management System (Python + MySQL)
-
-This is a simple **command-line based food court management system** built with **Python** and **MySQL**. It includes two user roles: **Admin** and **Customer**, with features for managing food items, placing orders, and viewing sales.
+A simple command-line-based food ordering and management system built using **Python** and **MySQL**.
 
 ---
 
-## 🚀 Features
+## 📋 Features
 
 ### 👨‍💼 Admin Panel
+- Secure admin login
+- Add new food items
+- View complete food menu
+- Delete food items by ID
 
-* Secure admin login
-* Add food items
-* View current menu
-* Delete food items
-* View customer orders
-
-### 🧑‍🍽️ Customer Panel
-
-* Browse menu
-* Place multiple orders
-* See itemized bill with total and timestamp
+### 🧑 Customer Panel
+- Register or login with username & password
+- Browse menu
+- Place food orders
+- View detailed bill (with total and timestamp)
 
 ---
 
-## 🛠️ Requirements
+## 🛠️ Technologies Used
 
-* Python 3.x
-* MySQL Server (Running locally)
-* Python MySQL Connector:
-
-```bash
-pip install mysql-connector-python
-```
+- **Python 3**
+- **MySQL** (with `mysql-connector-python`)
+- `getpass` for secure password input
+- `tabulate` for tabular data display in the terminal
 
 ---
 
-## 🧱 MySQL Database Setup
+## 🗂️ Database Setup
 
-### Database: `foodcourt`
+1. Open your MySQL client or CLI.
+2. Run the following SQL script to create required tables:
 
 ```sql
-CREATE DATABASE foodcourt;
+CREATE DATABASE IF NOT EXISTS foodcourt;
 USE foodcourt;
 
-CREATE TABLE food_items (
+CREATE TABLE IF NOT EXISTS food_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    price FLOAT
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    category VARCHAR(50),
+    subcategory VARCHAR(50)
 );
 
-CREATE TABLE orders (
-    order_id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     customer_name VARCHAR(100),
     item_id INT,
-    order_time DATETIME
+    order_time DATETIME,
+    FOREIGN KEY (item_id) REFERENCES food_items(id),
+    FOREIGN KEY (customer_name) REFERENCES customers(name) ON DELETE SET NULL
 );
-
-CREATE TABLE order_list (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    customer_name VARCHAR(100),
-    item_name VARCHAR(100),
-    item_price FLOAT,
-    order_time DATETIME
-);
-```
+````
 
 ---
 
-## 🔑 Admin Credentials
+## 💻 How to Run
 
-| Username | Password      |
-| -------- | ------------- |
-| `Asher`  | `Whynotasher` |
+1. Clone this repository:
 
-> ⚠️ Credentials are hardcoded in the script. Consider externalizing for better security.
+   ```bash
+   git clone https://github.com/your-username/foodcourt.git
+   cd foodcourt
+   ```
 
----
+2. Install required Python libraries:
 
-## 📦 How to Run
+   ```bash
+   pip install mysql-connector-python tabulate
+   ```
 
-1. Make sure your MySQL server is running and database is set up.
-2. Update MySQL credentials in the script if needed:
+3. Update your MySQL credentials in `foodCourt` class (if needed):
 
-```python
-host="localhost"
-user="root"
-password="root"
-```
+   ```python
+   self.datb = db.connect(
+       host="localhost",
+       user="root",
+       password="root",  # <- change if needed
+       database="foodcourt"
+   )
+   ```
 
-3. Run the script:
+4. Run the application:
 
-```bash
-python foodcourt.py
-```
-
----
-
-## 🧪 Sample Flow
-
-```
----- Enter Choice ----
-1 : Admin Login
-2 : Customer
-3 : Exit
-
-# Admin can add, view, or delete food items and see orders.
-
-# Customers can:
-- View menu
-- Order items by ID
-- See total bill
-```
+   ```bash
+   python foodcourt.py
+   ```
 
 ---
 
-## ✅ To-Do / Improvements
+## 🔐 Default Admin Credentials
 
-* [ ] Password encryption
-* [ ] GUI interface
-* [ ] Inventory tracking
-* [ ] Login system for customers
-* [ ] Session-based ordering
+* **Username:** Asher
+* **Password:** Whynotasher
+
+> You can change these in the `foodCourt.__init__()` method.
+
+---
+
+## 📌 Future Improvements
+
+* Password hashing (bcrypt or passlib)
+* GUI version with Tkinter or Flask
+* Order history for customers
+* Search/filter menu items
 
 ---
 
